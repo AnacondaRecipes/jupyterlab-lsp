@@ -1,0 +1,50 @@
+{% set name = "jupyterlab-lsp" %}
+{% set version = "5.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/jupyterlab-lsp-{{ version }}.tar.gz
+  sha256: 0f88e26803d0f3e4c8c8bef08a9f861f2706a77ca6d4d92f65026c09e958164b
+
+build:
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  number: 0
+  skip: true # [py<38 or s390x]
+
+requirements:
+  host:
+    - python
+    - pip
+    - wheel
+    - setuptools
+  run:
+    - python
+    - jupyter-lsp >=2.0.0
+    - jupyterlab >=4.0.6,<5.0.0a0
+
+test:
+  imports:
+    - jupyterlab_lsp
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/jupyter-lsp/jupyterlab-lsp
+  summary: Coding assistance for JupyterLab with Language Server Protocol
+  description: |
+    Coding assistance for JupyterLab (code navigation + hover suggestions + 
+    linters + autocompletion + rename) using Language Server Protocol
+  license: BSD-3-Clause
+  license_file: LICENSE
+  license_family: BSD
+  dev_url: https://github.com/jupyter-lsp/jupyterlab-lsp
+  doc_url: https://github.com/jupyter-lsp/jupyterlab-lsp
+
+extra:
+  recipe-maintainers:
+    - cbouss
